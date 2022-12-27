@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace PrintFramerAPI
 {
@@ -30,7 +32,22 @@ namespace PrintFramerAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                {   Version = "v1",
+                    Title = "PrintFramer API",
+                    Description = "Calculates the cost of a picture frame based on its dimensions.",
+                    TermsOfService = new Uri("https://go.microsoft.com/fwlink/?LinkID=206977"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Moises Alves",
+                        Email = string.Empty,
+                        Url = new Uri("https://moisesalves1.github.io/moisesalves1/")
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
